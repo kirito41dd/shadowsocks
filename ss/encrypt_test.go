@@ -8,7 +8,7 @@ import (
 const text = "You can you up, no can no bb."
 
 // 是否打印加密后的输出
-var debug = false
+var debug = true
 
 // 检测加密算法正确性
 
@@ -18,7 +18,7 @@ func testCipher(t *testing.T, c *Cipher, msg string) {
 	originTxt := make([]byte, n)
 
 	c.encrypt(cipherBuf, []byte(text)) // 加密
-	c.decrypt(originTxt, cipherBuf)	// 解密
+	c.decrypt(originTxt, cipherBuf)    // 解密
 
 	if debug {
 		t.Logf("%s encrypt -> %x decrypt -> %s\n", text, cipherBuf, originTxt)
@@ -31,9 +31,9 @@ func testCipher(t *testing.T, c *Cipher, msg string) {
 func Test_EvpBytesToKey(t *testing.T) {
 	key := evpBytesToKey("foobar", 32)
 	keyTarget := []byte{0x38, 0x58, 0xf6, 0x22, 0x30, 0xac, 0x3c, 0x91,
-						0x5f, 0x30, 0x0c, 0x66, 0x43, 0x12, 0xc6, 0x3f,
-						0x56, 0x83, 0x78, 0x52, 0x96, 0x14, 0xd2, 0x2d,
-						0xdb, 0x49, 0x23, 0x7d, 0x2f, 0x60, 0xbf, 0xdf}
+		0x5f, 0x30, 0x0c, 0x66, 0x43, 0x12, 0xc6, 0x3f,
+		0x56, 0x83, 0x78, 0x52, 0x96, 0x14, 0xd2, 0x2d,
+		0xdb, 0x49, 0x23, 0x7d, 0x2f, 0x60, 0xbf, 0xdf}
 	if !reflect.DeepEqual(key, keyTarget) {
 		t.Errorf("key not correct\n\texpect: %v\n\tgot:   %v\n", keyTarget, key)
 	}
@@ -111,6 +111,5 @@ func Test_ChaCha20(t *testing.T) {
 func Test_ChaCha20IETF(t *testing.T) {
 	testBlockCipher(t, "chacha20-ietf")
 }
-
 
 // TODO: 性能测试
