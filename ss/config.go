@@ -74,7 +74,7 @@ func ParseConfig(path string) (config *Config, err error) {
 	return
 }
 
-// 是否启用 Debug
+// 是否启用 Debug , 传 bool
 func SetDebug(d DebugLog) {
 	Debug = d
 }
