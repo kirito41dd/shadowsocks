@@ -28,3 +28,8 @@ const (
 	S5lenDmBase = 1 + 1 + 2           // 1addrType + 1addrLen + 2port, plus addrLen
 	// lenHmacSha1 = 10
 )
+
+const (
+	S5socksVer5       = 5
+	S5socksCmdConnect = 1
+)

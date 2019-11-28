@@ -29,7 +29,7 @@ type Config struct {
 
 var readTimeout time.Duration
 
-func (config *Config) GetServerArry() []string {
+func (config *Config) GetServerArray() []string {
 	// 不建议在服务器选项中指定多个服务器
 	// 为了向后兼容，保持现状
 	if config.Server == nil {
