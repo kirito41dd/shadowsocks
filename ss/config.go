@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"reflect"
 	"time"
@@ -75,8 +76,13 @@ func ParseConfig(path string) (config *Config, err error) {
 }
 
 // 是否启用 Debug , 传 bool
-func SetDebug(d DebugLog) {
-	Debug = d
+func SetDebug(b bool) {
+	isDebug = b
+	if b {
+		Debug = log.New(os.Stdout, "[DEBUG]", log.Ltime|log.Lshortfile)
+	} else {
+		Debug = log.New(null, "[DEBUG]", log.Ltime|log.Lshortfile)
+	}
 }
 
 func UpdateConfig(old, new *Config) {
