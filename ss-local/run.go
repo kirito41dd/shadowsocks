@@ -49,7 +49,7 @@ func handleConnection(conn net.Conn) {
 		log.Println("error getting request:", err)
 		return
 	}
-	// 发送回复 TODO: 这里目前写死了
+	// 发送回复 TODO: 这里目前写死了，应该返回的是欲连接主机的 地址和端口，但这些信息对客户端没啥用
 	// |VER | REP |  RSV  | ATYP | BND.ADDR | BND.PORT |
 	//   5   success  0      ipv4   0.0.0.0    1080   网络序
 	_, err = conn.Write([]byte{0x05, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x08, 0x43})
