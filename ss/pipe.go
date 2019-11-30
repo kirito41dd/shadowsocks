@@ -20,13 +20,13 @@ func PipeThenClose(src, dst net.Conn, addTraffic func(int)) {
 	for {
 		SetReadTimeout(src)
 		n, err := src.Read(buf)
-		if addTraffic != nil {
-			addTraffic(n) // 记录流量
-		}
 		if n > 0 {
 			if _, err := dst.Write(buf[0:n]); err != nil {
 				Debug.Println("write:", err)
 				break
+			}
+			if addTraffic != nil {
+				addTraffic(n) // 记录流量
 			}
 		}
 		if err != nil {
