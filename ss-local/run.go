@@ -46,7 +46,7 @@ func handleConnection(conn net.Conn) {
 	}
 	rawaddr, addr, err := getRequest(conn)
 	if err != nil {
-		log.Printf("error getting request:", err)
+		log.Println("error getting request:", err)
 		return
 	}
 	// 发送回复 TODO: 这里目前写死了

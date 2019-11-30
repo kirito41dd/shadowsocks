@@ -129,7 +129,7 @@ func parseServerConfig(config *ss.Config) {
 	}
 	servers.failCnt = make([]int, len(servers.srvCipher))
 	for _, se := range servers.srvCipher {
-		log.Printf("available remote server", se.server)
+		log.Println("available remote server", se.server)
 	}
 	return
 }
