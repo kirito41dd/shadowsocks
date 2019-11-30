@@ -10,10 +10,6 @@ import (
 	"strconv"
 )
 
-const (
-	socksCmdConnect = 1
-)
-
 func run(listenAddr string) {
 	ln, err := net.Listen("tcp", listenAddr)
 	if err != nil {
