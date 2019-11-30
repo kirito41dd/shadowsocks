@@ -8,13 +8,16 @@ import (
 	"log"
 	"os"
 	"path"
+	"strconv"
 )
+
+var debug bool
 
 func main() {
 	log.SetOutput(os.Stdout)
 	var configFile, cmdServer, cmdURI string
 	var cmdConfig ss.Config
-	var printVer, debug, w bool
+	var printVer, w bool
 
 	flag.BoolVar(&printVer, "version", false, "print version")
 	flag.StringVar(&configFile, "c", "config.json", "specify config file")
@@ -25,7 +28,7 @@ func main() {
 	flag.IntVar(&cmdConfig.Timeout, "t", 300, "timeout in seconds")
 	flag.IntVar(&cmdConfig.LocalPort, "l", 0, "local socks5 proxy port")
 	flag.StringVar(&cmdConfig.Method, "m", "", "encryption method, default: aes-256-cfb")
-	flag.BoolVar(&debug, "d", false, "print debug message")
+	flag.BoolVar(&debug, "d", true, "print debug message")
 	flag.BoolVar(&w, "w", false, "write to config")
 	flag.StringVar(&cmdURI, "u", "", "shadowsocks URI")
 	flag.Parse()
@@ -92,5 +95,7 @@ func main() {
 		}
 	}
 
-	// TODO: go on
+	parseServerConfig(config)
+
+	run(config.LocalAddress + ":" + strconv.Itoa(config.LocalPort))
 }
