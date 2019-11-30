@@ -24,7 +24,7 @@ type Config struct {
 
 	// 以下选项只用于 ss client
 	// 客户端配置中， 服务器顺序很重要， 因此使用数组而不是map
-	ServerPassword [][]string `json:"server_password"`
+	ServerPassword [][]string `json:"server_password"` // 多个服务器 [](server, passwd [,method])
 }
 
 var readTimeout time.Duration
