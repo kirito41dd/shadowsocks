@@ -25,3 +25,7 @@ func enoughOptions(config *ss.Config) bool {
 	return config.Server != nil && config.ServerPort != 0 &&
 		config.LocalPort != 0 && config.Password != ""
 }
+
+func Traffic(n int) {
+	ss.Debug.Printf("%d bytes data exchange\n", n)
+}
