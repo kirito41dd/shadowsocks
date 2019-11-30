@@ -1,9 +1,9 @@
 {
-    "server": "",
-    "server_port": 0,
-    "local_port": 0,
+    "server": "149.28.129.71",
+    "server_port": 8561,
+    "local_port": 1081,
     "local_address": "",
-    "password": "",
+    "password": "fuckyou..",
     "method": "aes-256-cfb",
     "port_password": null,
     "timeout": 300,
