@@ -1,6 +1,7 @@
 package ss
 
 import (
+	"io"
 	"net"
 	"time"
 )
@@ -29,7 +30,9 @@ func PipeThenClose(src, dst net.Conn, addTraffic func(int)) {
 			}
 		}
 		if err != nil {
-			Debug.Println("read:", err)
+			if err != io.EOF {
+				Debug.Println("read:", err)
+			}
 			break
 		}
 	}
