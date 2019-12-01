@@ -11,15 +11,15 @@ import (
 )
 
 type Config struct {
-	Server       interface{} `json:"server"`
+	Server       interface{} `json:"server"` // ss local 用
 	ServerPort   int         `json:"server_port"`
-	LocalPort    int         `json:"local_port"`
-	LocalAddress string      `json:"local_address"`
+	LocalPort    int         `json:"local_port"`    // ss local 用
+	LocalAddress string      `json:"local_address"` // ss local 用
 	Password     string      `json:"password"`
 	Method       string      `json:"method"`
 
 	// 以下选项只用于 ss server
-	PortPassword map[string]string `json:"port_password"` // port:password
+	PortPassword map[string]string `json:"port_password"` // port:password  如果指定，会忽略上面的 server_port password
 	Timeout      int               `json:"timeout"`
 
 	// 以下选项只用于 ss client

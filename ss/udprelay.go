@@ -119,6 +119,7 @@ func parseHeaderFromAddr(addr net.Addr) ([]byte, int) {
 	return buf[:1+iplen+2], 1 + iplen + 2
 }
 
+// 通过 write 将 readClose 发来的数据 发送给 writeaddr 这个地址
 func Pipeloop(write net.PacketConn, writeAddr net.Addr, readClose net.PacketConn, addTraffic func(int)) {
 	buf := leakyBuf.Get()
 	defer leakyBuf.Put(buf)
@@ -148,6 +149,8 @@ func Pipeloop(write net.PacketConn, writeAddr net.Addr, readClose net.PacketConn
 	} // loop
 }
 
+// | ATYP | DST.ADDR | DST.PORT |   DATA   |
+// handle 是服务器的udp连接， src 是 ss-local 地址， n,receive 是 ss-local 发来的数据
 func handleUDPConnection(handle *SecurePacketConn, n int, src net.Addr, receive []byte, addTraffic func(int)) {
 	var dstIP net.IP
 	var reqLen int
