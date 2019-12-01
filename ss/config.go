@@ -19,7 +19,7 @@ type Config struct {
 	Method       string      `json:"method"`
 
 	// 以下选项只用于 ss server
-	PortPassword map[string]string `json:"port_password"`
+	PortPassword map[string]string `json:"port_password"` // port:password
 	Timeout      int               `json:"timeout"`
 
 	// 以下选项只用于 ss client

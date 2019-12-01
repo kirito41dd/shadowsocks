@@ -173,7 +173,7 @@ func handleUDPConnection(handle *SecurePacketConn, n int, src net.Addr, receive 
 			Debug.Println("[udp]invalid received message.")
 		}
 		name := string(receive[S5Dm0Idx : S5Dm0Idx+int(receive[S5DmLenIdx])]) // 取出域名
-		// 避免出现 panic：syscall：在windows上将带有NUL的字符串传递给StringToUTF16。
+		// 保证域名中没有 nil 字符，否则在win上会 panic
 		if strings.ContainsRune(name, 0x00) {
 			fmt.Println("[udp]invalid domain name.")
 		}
