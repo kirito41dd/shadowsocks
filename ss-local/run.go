@@ -69,6 +69,8 @@ func handleConnection(conn net.Conn) {
 
 	go ss.PipeThenClose(conn, remote, Traffic)
 	ss.PipeThenClose(remote, conn, nil)
+	closed = true
+	ss.Debug.Println("closed connection to", addr)
 }
 
 func handShake(conn net.Conn) (err error) {
