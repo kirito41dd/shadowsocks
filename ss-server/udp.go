@@ -32,9 +32,15 @@ func runUDP(port, password string) {
 	securePacketConn := ss.NewSecurePacketConn(conn, cipher.Copy())
 	for {
 		// TODO: Traffic 影响效率
-		if err := ss.ReadAndHandleUDPReq(securePacketConn, func(Traffic int) {
-			passwdManger.addTraffic(port, Traffic)
-		}); err != nil {
+		//if err := ss.ReadAndHandleUDPReq(securePacketConn, func(Traffic int) {
+		//	passwdManger.addTraffic(port, Traffic)
+		//}); err != nil {
+		//	if debug {
+		//		ss.Debug.Printf("udp read error: %v\n", err)
+		//	}
+		//	return
+		//}
+		if err := ss.ReadAndHandleUDPReq(securePacketConn, nil); err != nil {
 			if debug {
 				ss.Debug.Printf("udp read error: %v\n", err)
 			}
