@@ -62,7 +62,7 @@ func handleConnection(conn *ss.Conn, port string) {
 	// TODO: 或许不需要记录
 	// 累计连接数达到一定数量记录一次，可能不太准
 	if connCnt-nextLogConnCnt >= 0 {
-		log.Printf("Number of client connections reaches %d\n", nextLogConnCnt)
+		log.Printf("Number of client tcp connections reaches %d\n", nextLogConnCnt)
 		nextLogConnCnt += logCntDelta
 	}
 	if debug {
