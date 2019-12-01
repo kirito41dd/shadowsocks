@@ -51,6 +51,7 @@ const (
 	S5domain byte = 0x03
 	S5ipv6   byte = 0x04
 
+	S5lenPort = 2 // port 字段长度
 	// VER NMETHODS CMD位置，
 	S5VerIdx     = 0
 	S5NmethodIdx = 1
