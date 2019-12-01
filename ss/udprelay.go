@@ -171,7 +171,7 @@ func handleUDPConnection(handle *SecurePacketConn, n int, src net.Addr, receive 
 		}
 		dstIP = net.IP(receive[S5IP0Idx : S5IP0Idx+net.IPv6len])
 	case S5domain:
-		reqLen = int(receive[S5Dm0Idx]) + S5lenDmBase // 域名长度 加上其他头
+		reqLen = int(receive[S5DmLenIdx]) + S5lenDmBase // 域名长度 加上其他头
 		if len(receive) < reqLen {
 			Debug.Println("[udp]invalid received message.")
 		}
