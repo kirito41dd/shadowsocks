@@ -5,6 +5,8 @@ import (
 	"flag"
 	"github.com/zshorz/shadowsockets/ss"
 	"log"
+	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"path"
 	"runtime"
@@ -119,5 +121,17 @@ func main() {
 	//	defer conn.Close()
 	//	go managerDaemon(conn)
 	//}
+
+	// 性能分析
+	if debug {
+		go func() {
+			addr := "127.0.0.1:9999"
+			// http://127.0.0.1:9999/debug/pprof/
+			if err := http.ListenAndServe(addr, nil); err != nil {
+				log.Printf("start pprof failed on %s\n", addr)
+			}
+		}()
+	}
+
 	waitSignal()
 }
