@@ -52,7 +52,7 @@ func run(port, password string) {
 
 func handleConnection(conn *ss.Conn, port string) {
 	var host string
-
+	connCnt++
 	// TODO: 或许不需要记录
 	// 累计连接数达到一定数量记录一次，可能不太准
 	if connCnt-nextLogConnCnt >= 0 {
