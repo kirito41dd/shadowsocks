@@ -13,7 +13,7 @@ import (
 	"syscall"
 )
 
-const logCntDelta = 100
+const logCntDelta = 1000
 
 var connCnt int
 var nextLogConnCnt = logCntDelta
