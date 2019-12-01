@@ -23,16 +23,16 @@ go build -o ss-server.exe .
 参数说明
 
 ```shell
--version 		# 打印版本后退出
+-version 		  # 打印版本后退出
 -c filename 	# 指定配置文件
--k passwd		# 服务器密码
+-k passwd		  # 服务器密码
 -p serverPort	# 指定服务器端口
 -t timeout		# 超时时间
--m method		# 加密方法
--core n			# 最大线程数
--d				# debug模式
--u				# udp relay
--w 				# 命令行输入的配置写入配置文件
+-m method		  # 加密方法
+-core n			  # 最大线程数
+-d				    # debug模式
+-u				    # udp relay
+-w 				    # 命令行输入的配置写入配置文件
 -uri ip/domain	# 打印URI
 #-manager-address
 ```
@@ -61,18 +61,18 @@ go build -o ss-local.exe .
 
 ```shell
 # 每个参数都有默认值， 如果找不到配置文件，在运行目录生成名为 config.json 的配置文件
--version 		# 打印版本后退出
+-version 		  # 打印版本后退出
 -c filename 	# 指定配置文件
--s server		# 指定服务器
+-s server		  # 指定服务器
 -p serverPort	# 指定服务器端口
--k passwd		# 服务器密码
+-k passwd		  # 服务器密码
 -b address 		# 本地地址
--l port			# 本地端口
--m method		# 加密方法
+-l port			  # 本地端口
+-m method		  # 加密方法
 -t timeout		# 超时时间
--d				# debug模式
--w 				# 命令行输入的配置写入配置文件
--u 				# 通过URI导入
+-d				    # debug模式
+-w 				    # 命令行输入的配置写入配置文件
+-u 				    # 通过URI导入
 ```
 
 例子
