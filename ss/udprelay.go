@@ -140,11 +140,15 @@ func Pipeloop(write net.PacketConn, writeAddr net.Addr, readClose net.PacketConn
 		// TODO: 这里需要改进
 		if req, ok := reqList.Get(raddr.String()); ok {
 			n, _ := write.WriteTo(append(req, buf[:n]...), writeAddr)
-			addTraffic(n)
+			if addTraffic != nil {
+				addTraffic(n)
+			}
 		} else {
 			header, hlen := parseHeaderFromAddr(raddr)
 			n, _ := write.WriteTo(append(header[:hlen], buf[:n]...), writeAddr)
-			addTraffic(n)
+			if addTraffic != nil {
+				addTraffic(n)
+			}
 		}
 	} // loop
 }
@@ -225,7 +229,9 @@ func handleUDPConnection(handle *SecurePacketConn, n int, src net.Addr, receive 
 	// 发送数据 给 remote
 	remote.SetDeadline(time.Now().Add(udpTimeout))
 	n, err = remote.WriteTo(receive[reqLen:n], dst)
-	addTraffic(n)
+	if addTraffic != nil {
+		addTraffic(n)
+	}
 	if err != nil {
 		if ne, ok := err.(*net.OpError); ok && (ne.Err == syscall.EMFILE || ne.Err == syscall.ENFILE) {
 			Debug.Println("[udp]write error:", err)
