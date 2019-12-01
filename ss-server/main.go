@@ -6,6 +6,7 @@ import (
 	"github.com/zshorz/shadowsockets/ss"
 	"log"
 	"os"
+	"path"
 	"runtime"
 )
 
@@ -15,6 +16,7 @@ var udp bool
 var managerAddr string
 var configFile string
 var config *ss.Config
+var printURI string // 提供 公网ip或域名
 
 func main() {
 	log.SetOutput(os.Stdout)
@@ -35,6 +37,7 @@ func main() {
 	flag.BoolVar(&w, "w", false, "write to config")
 	flag.BoolVar(&udp, "u", false, "UDP Relay")
 	flag.StringVar(&managerAddr, "manager-address", "", "shadowsocks manager listening address")
+	flag.StringVar(&printURI, "uri", "", "print URI, provide public net ip or domain")
 	flag.Parse()
 
 	if printVer {
@@ -44,6 +47,14 @@ func main() {
 	ss.SetDebug(debug)
 
 	var err error
+	// 没有配置文件 尝试在执行bin目录寻找
+	exists, err := ss.IsFileExist(configFile)
+	binDir := path.Dir(os.Args[0])
+	if (!exists || err != nil) && binDir != "" && binDir != "." {
+		oldConfig := configFile
+		configFile = path.Join(binDir, "config.json")
+		log.Printf("%s not found, try config file %s\n", oldConfig, configFile)
+	}
 	config, err = ss.ParseConfig(configFile)
 	if err != nil {
 		if !os.IsNotExist(err) {

@@ -27,6 +27,12 @@ func run(port, password string) {
 	passwdManger.add(port, password, ln)
 	var cipher *ss.Cipher
 	log.Printf("server listening port %v ...\n", port)
+
+	if printURI != "" {
+		str := createURI(config.Method, password, printURI, port)
+		log.Printf("%s\n", str)
+	}
+
 	for {
 		conn, err := ln.Accept()
 		if err != nil {

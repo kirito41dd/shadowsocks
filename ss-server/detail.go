@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"errors"
 	"github.com/zshorz/shadowsockets/ss"
 	"log"
@@ -10,6 +11,15 @@ import (
 	"strconv"
 	"syscall"
 )
+
+// ss://base64(method:password@host:port)
+func createURI(method, password, host, port string) (uri string) {
+	uri = "ss://"
+	raw := method + ":" + password + "@" + host + ":" + port
+	str := base64.StdEncoding.EncodeToString([]byte(raw))
+	uri = uri + str
+	return
+}
 
 func waitSignal() {
 	var sigChan = make(chan os.Signal, 1)
