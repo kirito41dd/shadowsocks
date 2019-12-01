@@ -15,6 +15,9 @@ git clone https://github.com/zshorz/shadowsockets.git
 cd shadowsockets/ss-server
 go build -o ss-server.exe .
 ./ss-server.exe -c ../config.json
+
+# 命令行指定参数 并创建配置文件的方式启动
+./ss-server.exe -p 9999 -k 123456 -w -uri
 ```
 
 参数说明
@@ -47,6 +50,11 @@ git clone https://github.com/zshorz/shadowsockets.git
 cd shadowsockets/ss-local
 go build -o ss-local.exe .
 ./ss-local.exe -c ../config.json
+
+# 命令行指定参数 并创建配置文件的方式启动
+./ss-local.exe -s 127.0.0.1 -p 9999 -k 123456 -b 1080 -w
+# 通过 URI 启动
+./ss-local.exe -b 1080 -u ss://YWVzLTI1N...
 ```
 
 参数说明
