@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/binary"
 	"fmt"
-	"github.com/zshorz/shadowsockets/ss"
+	"github.com/zshorz/shadowsocks/ss"
 	"io"
 	"log"
 	"net"

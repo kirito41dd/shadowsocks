@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"github.com/zshorz/shadowsockets/ss"
+	"github.com/zshorz/shadowsocks/ss"
 	"math/rand"
 	"time"
 )

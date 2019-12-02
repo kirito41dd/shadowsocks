@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/base64"
-	"github.com/zshorz/shadowsockets/ss"
+	"github.com/zshorz/shadowsocks/ss"
 	"log"
 	"net"
 	"strconv"

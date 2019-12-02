@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/binary"
-	"github.com/zshorz/shadowsockets/ss"
+	"github.com/zshorz/shadowsocks/ss"
 	"io"
 	"log"
 	"math/rand"

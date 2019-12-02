@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/zshorz/shadowsockets/ss"
+	"github.com/zshorz/shadowsocks/ss"
 	"log"
 	"net"
 	"strconv"

@@ -1,4 +1,4 @@
-module github.com/zshorz/shadowsockets
+module github.com/zshorz/shadowsocks
 
 go 1.13
 
