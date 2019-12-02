@@ -8,6 +8,9 @@ install:
   - go install ./ss-server
   - go install ./ss-local
 
+env:
+  - GO111MODULE="on"
+
 script:
   - PATH=$PATH:$HOME/gopath/bin bash -x ./test.sh
 
