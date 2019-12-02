@@ -1,5 +1,5 @@
 # shadowsocks
-[](![](https://img.shields.io/github/last-commit/zshorz/shadowsocks)) [](![](https://travis-ci.org/zshorz/shadowsocks.svg?branch=master))
+[![](https://img.shields.io/github/last-commit/zshorz/shadowsocks)]() [![](https://travis-ci.org/zshorz/shadowsocks.svg?branch=master)]()
 
 科学上网
 
