@@ -79,3 +79,8 @@ go build -o ss-local.exe .
 ## 关于
 * 请保证go版本大于1.11，需要 go mod 支持
 * 出于学习的目的，这是我个人维护的版本，fork自[shadowsocks-go](https://github.com/shadowsocks/shadowsocks-go)（代码已有较大变动）
+* 你可以在[这里](https://github.com/shadowsocks)找到各个平台的客户端（ss-local目前只是用来调试，功能并不健全）
+    * [ss-c#](https://github.com/shadowsocks/shadowsocks-windows/releases) for Windows
+    * [ss-android](https://github.com/shadowsocks/shadowsocks-android/releases) for Android
+    * 当然也可以使用ssr的客户端，ssr兼容ss
+
