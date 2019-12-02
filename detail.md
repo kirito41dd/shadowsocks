@@ -123,3 +123,6 @@ remote 的回复被 ss-server 送给 ss-local
 
 ss-local 无脑转发 ss-server 的回复给 client
 
+
+
+* 更多细节请在代码中寻找
