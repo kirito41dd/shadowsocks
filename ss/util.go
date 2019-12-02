@@ -1,8 +1,6 @@
 package ss
 
 import (
-	"crypto/hmac"
-	"crypto/sha1"
 	"errors"
 	"fmt"
 	"os"
@@ -27,10 +25,4 @@ func IsFileExist(path string) (bool, error) {
 		return false, nil
 	}
 	return false, err
-}
-
-func HmacSha1(key []byte, data []byte) []byte {
-	hmacSha1 := hmac.New(sha1.New, key)
-	hmacSha1.Write(data)
-	return hmacSha1.Sum(nil)[:10]
 }
