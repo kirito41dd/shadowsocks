@@ -1,0 +1,14 @@
+language: go
+go:
+  - "1.11.x"
+  - "1.12.x"
+  - "1.13.x"
+
+install:
+  - go install ./ss-server
+  - go install ./ss-local
+
+script:
+  - PATH=$PATH:$HOME/gopath/bin bash -x ./test.sh
+
+sudo: false
