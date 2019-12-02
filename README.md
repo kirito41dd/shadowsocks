@@ -83,4 +83,5 @@ go build -o ss-local.exe .
     * [ss-c#](https://github.com/shadowsocks/shadowsocks-windows/releases) for Windows
     * [ss-android](https://github.com/shadowsocks/shadowsocks-android/releases) for Android
     * 当然也可以使用ssr的客户端，ssr兼容ss
+* 有关协议握手细节可以查看 [detail.md](./detail.md) 和 [rfc1928.txt](./rfc1928.txt)
 
