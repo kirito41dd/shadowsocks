@@ -129,6 +129,8 @@ func main() {
 			// http://127.0.0.1:9999/debug/pprof/
 			if err := http.ListenAndServe(addr, nil); err != nil {
 				log.Printf("start pprof failed on %s\n", addr)
+			} else {
+				log.Printf("you can look pprof at http://127.0.0.1:9999/debug/pprof/\n")
 			}
 		}()
 	}
