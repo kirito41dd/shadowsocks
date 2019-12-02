@@ -1,4 +1,4 @@
-# shadowsockets
+# shadowsocks
 
 科学上网
 
