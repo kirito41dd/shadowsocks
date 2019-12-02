@@ -1,3 +1,4 @@
+// 客户端实现udp代理使用， 服务端没有使用此文件
 package ss
 
 import (
