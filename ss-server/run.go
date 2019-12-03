@@ -29,7 +29,7 @@ func run(port, password string) {
 	log.Printf("server listening port %v ...\n", port)
 
 	if printURI != "" {
-		str := createURI(config.Method, password, printURI, port)
+		str := ss.CreateURI(config.Method, password, printURI, port)
 		log.Printf("%s\n", str)
 	}
 
