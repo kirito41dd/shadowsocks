@@ -40,6 +40,7 @@ func main() {
 	flag.BoolVar(&udp, "u", false, "UDP Relay")
 	flag.StringVar(&managerAddr, "manager-address", "", "shadowsocks manager listening address")
 	flag.StringVar(&printURI, "uri", "", "print URI, provide public net ip or domain")
+	flag.BoolVar(&sanitizeIps, "sanitize", false, "on debug, sanitize ip:port to x.x.x.x:zzzz")
 	flag.Parse()
 
 	if printVer {

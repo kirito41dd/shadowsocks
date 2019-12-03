@@ -1,6 +1,7 @@
 package ss
 
 import (
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"os"
@@ -25,4 +26,13 @@ func IsFileExist(path string) (bool, error) {
 		return false, nil
 	}
 	return false, err
+}
+
+// ss://base64(method:password@host:port)
+func CreateURI(method, password, host, port string) (uri string) {
+	uri = "ss://"
+	raw := method + ":" + password + "@" + host + ":" + port
+	str := base64.StdEncoding.EncodeToString([]byte(raw))
+	uri = uri + str
+	return
 }

@@ -35,6 +35,7 @@ go build -o ss-server.exe .
 -u				# udp relay
 -w				# 命令行输入的配置写入配置文件
 -uri ip/domain	# 打印URI
+-sanitize       # 在debug模式下，ip:port被处理为 x.x.x.x:zzzz
 #-manager-address
 ```
 
