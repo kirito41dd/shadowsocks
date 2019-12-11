@@ -1,5 +1,5 @@
 # shadowsocks
-[![](https://img.shields.io/github/last-commit/zshorz/shadowsocks)]() [![](https://travis-ci.org/zshorz/shadowsocks.svg?branch=master)]() ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/zshorz/shadowsocks)
+![](https://img.shields.io/github/last-commit/zshorz/shadowsocks) [![](https://travis-ci.org/zshorz/shadowsocks.svg?branch=master)](https://www.travis-ci.org/zshorz/shadowsocks/builds) [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/zshorz/shadowsocks)](https://hub.docker.com/repository/docker/zshorz/shadowsocks/builds)
 
 科学上网
 
