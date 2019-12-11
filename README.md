@@ -37,8 +37,9 @@ go build -o ss-server.exe .
 参数说明
 
 ```shell
+# docker下不使用配置文件，全部命令行指定
 -version		# 打印版本后退出
--c filename		# 指定配置文件
+-c filename		# 指定配置文件 docker不使用
 -k passwd		# 服务器密码
 -p serverPort	# 指定服务器端口
 -t timeout		# 超时时间
@@ -46,8 +47,8 @@ go build -o ss-server.exe .
 -core n			# 最大线程数
 -d				# debug模式
 -u				# udp relay
--w				# 命令行输入的配置写入配置文件
--uri ip/domain	# 打印URI
+-w				# 命令行输入的配置写入配置文件 docker不使用
+-uri			# 打印URI， 会自动获取公网ip
 -sanitize       # 在debug模式下，ip:port被处理为 x.x.x.x:zzzz
 #-manager-address
 ```
