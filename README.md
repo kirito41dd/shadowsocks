@@ -49,6 +49,7 @@ go build -o ss-server.exe .
 -u				# udp relay
 -w				# 命令行输入的配置写入配置文件 docker不使用
 -uri			# 打印URI， 会自动获取公网ip
+-domain domain/ip   # 如果指定domain,则在生成uri的时候阻止获取公网ip,用指定的domain/ip代替
 -sanitize       # 在debug模式下，ip:port被处理为 x.x.x.x:zzzz
 #-manager-address
 ```

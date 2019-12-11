@@ -19,6 +19,7 @@ var managerAddr string
 var configFile string
 var config *ss.Config
 var printURI bool // 自动获取 公网ip
+var domain string // 如果指定，将阻止获取公网ip,用指定的domain/ip代替生成uri
 
 func main() {
 	log.SetOutput(os.Stdout)
@@ -40,6 +41,7 @@ func main() {
 	flag.BoolVar(&udp, "u", false, "UDP Relay")
 	flag.StringVar(&managerAddr, "manager-address", "", "shadowsocks manager listening address")
 	flag.BoolVar(&printURI, "uri", false, "print URI, auto get public ip")
+	flag.StringVar(&domain, "domain", "", "domain/ip instead public ip, when generate uri")
 	flag.BoolVar(&sanitizeIps, "sanitize", false, "on debug, sanitize ip:port to x.x.x.x:zzzz")
 	flag.Parse()
 

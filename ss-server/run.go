@@ -29,7 +29,10 @@ func run(port, password string) {
 	log.Printf("server listening port %v ...\n", port)
 
 	if printURI != false {
-		str := ss.CreateURI(config.Method, password, ss.GetPublicIP(), port)
+		if domain == "" {
+			domain = ss.GetPublicIP()
+		}
+		str := ss.CreateURI(config.Method, password, domain, port)
 		log.Printf("%s\n", str)
 	}
 
