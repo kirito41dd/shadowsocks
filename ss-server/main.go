@@ -18,7 +18,7 @@ var udp bool
 var managerAddr string
 var configFile string
 var config *ss.Config
-var printURI string // 提供 公网ip或域名
+var printURI bool // 自动获取 公网ip
 
 func main() {
 	log.SetOutput(os.Stdout)
@@ -39,7 +39,7 @@ func main() {
 	flag.BoolVar(&w, "w", false, "write to config")
 	flag.BoolVar(&udp, "u", false, "UDP Relay")
 	flag.StringVar(&managerAddr, "manager-address", "", "shadowsocks manager listening address")
-	flag.StringVar(&printURI, "uri", "", "print URI, provide public net ip or domain")
+	flag.BoolVar(&printURI, "uri", false, "print URI, auto get public ip")
 	flag.BoolVar(&sanitizeIps, "sanitize", false, "on debug, sanitize ip:port to x.x.x.x:zzzz")
 	flag.Parse()
 

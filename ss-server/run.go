@@ -28,8 +28,8 @@ func run(port, password string) {
 	var cipher *ss.Cipher
 	log.Printf("server listening port %v ...\n", port)
 
-	if printURI != "" {
-		str := ss.CreateURI(config.Method, password, printURI, port)
+	if printURI != false {
+		str := ss.CreateURI(config.Method, password, ss.GetPublicIP(), port)
 		log.Printf("%s\n", str)
 	}
 

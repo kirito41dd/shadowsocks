@@ -4,6 +4,8 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
 )
 
@@ -35,4 +37,23 @@ func CreateURI(method, password, host, port string) (uri string) {
 	str := base64.StdEncoding.EncodeToString([]byte(raw))
 	uri = uri + str
 	return
+}
+
+var publicIp = ""
+
+func GetPublicIP() string {
+	if publicIp != "" {
+		return publicIp
+	}
+	resp, err := http.Get("http://ipinfo.io/ip")
+	defer resp.Body.Close()
+	if err != nil {
+		return ""
+	}
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return ""
+	}
+	publicIp = string(data)
+	return publicIp
 }
