@@ -5,6 +5,19 @@
 
 
 
+## 使用docker
+
+docker仓库地址：[https://hub.docker.com/r/zshorz/shadowsocks](https://hub.docker.com/r/zshorz/shadowsocks)
+
+```shell
+# 拉取
+docker pull zshorz/shadowsocks
+# 以daemon方式运行
+docker run --name ss-server --rm -d -p 9999:9999/tcp -p 9999:9999/udp zshorz/shadowsocks:latest -p 9999 -k 123456 -uri -u
+# 查看输出以便于得到 URI， 强烈建议映射端口时使用相同端口号，否则 URI 无效
+docker logs ss-server 
+```
+
 
 
 ## ss-server
