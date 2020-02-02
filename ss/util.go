@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func PrintVersion() {
@@ -55,5 +56,6 @@ func GetPublicIP() string {
 		return ""
 	}
 	publicIp = string(data)
+	publicIp = strings.Replace(publicIp, "\n", "", -1) // 去除行末空格，否则生成uri会出错
 	return publicIp
 }

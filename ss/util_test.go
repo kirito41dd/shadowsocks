@@ -4,5 +4,6 @@ import "testing"
 
 func Test_GetPublicIP(t *testing.T) {
 	str := GetPublicIP()
-	t.Log("Public ip:", str)
+	t.Logf("Public ip:(%s)", str)
+	t.Log("ipstr len = ", len(str))
 }
