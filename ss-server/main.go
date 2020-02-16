@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"github.com/zshorz/ezlog"
 	"github.com/zshorz/shadowsocks/ss"
-	"log"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
@@ -22,8 +22,8 @@ var printURI bool // 自动获取 公网ip
 var domain string // 如果指定，将阻止获取公网ip,用指定的domain/ip代替生成uri
 
 func main() {
-	log.SetOutput(os.Stdout)
-	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+	ezlog.SetOutput(os.Stdout)
+	ezlog.SetFlags(ezlog.BitDefault)
 
 	var cmdConfig ss.Config
 	var printVer, w bool
@@ -58,12 +58,12 @@ func main() {
 	if (!exists || err != nil) && binDir != "" && binDir != "." {
 		oldConfig := configFile
 		configFile = path.Join(binDir, "config.json")
-		log.Printf("%s not found, try config file %s\n", oldConfig, configFile)
+		ezlog.Infof("%s not found, try config file %s\n", oldConfig, configFile)
 	}
 	config, err = ss.ParseConfig(configFile)
 	if err != nil {
 		if !os.IsNotExist(err) {
-			log.Printf("error reading %s: %v\n", configFile, err)
+			ezlog.Errorf("error reading %s: %v\n", configFile, err)
 			os.Exit(1)
 		}
 		config = &cmdConfig
@@ -75,7 +75,7 @@ func main() {
 		config.Method = "aes-256-cfb"
 	}
 	if err = ss.CheckCipherMethod(config.Method); err != nil {
-		log.Println(err)
+		ezlog.Error(err)
 		os.Exit(1)
 	}
 	if core > 0 {
@@ -84,7 +84,7 @@ func main() {
 	if w {
 		file, err := os.Create(configFile)
 		if err != nil {
-			log.Printf("can not write to config %s\n", err)
+			ezlog.Errorf("can not write to config %s\n", err)
 		}
 		enc := json.NewEncoder(file)
 		enc.SetIndent("", "    ")
@@ -97,7 +97,7 @@ func main() {
 
 	// 启动代理
 	if config.PortPassword == nil {
-		log.Printf("need Specify port_password or server_port password")
+		ezlog.Info("need Specify port_password or server_port password")
 		os.Exit(1)
 	}
 	for port, password := range config.PortPassword {
@@ -131,9 +131,9 @@ func main() {
 			addr := "127.0.0.1:9999"
 			// http://127.0.0.1:9999/debug/pprof/
 			if err := http.ListenAndServe(addr, nil); err != nil {
-				log.Printf("start pprof failed on %s\n", addr)
+				ezlog.Error("start pprof failed on %s\n", addr)
 			} else {
-				log.Printf("you can look pprof at http://127.0.0.1:9999/debug/pprof/\n")
+				ezlog.Info("you can look pprof at http://127.0.0.1:9999/debug/pprof/\n")
 			}
 		}()
 	}

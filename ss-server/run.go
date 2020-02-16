@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/binary"
 	"fmt"
+	"github.com/zshorz/ezlog"
 	"github.com/zshorz/shadowsocks/ss"
 	"io"
-	"log"
 	"net"
 	"os"
 	"strconv"
@@ -21,35 +21,33 @@ var nextLogConnCnt = logCntDelta
 func run(port, password string) {
 	ln, err := net.Listen("tcp", ":"+port)
 	if err != nil {
-		log.Printf("error listening port %v: %v\n", port, err)
+		ezlog.Infof("error listening port %v: %v\n", port, err)
 		os.Exit(1)
 	}
 	passwdManger.add(port, password, ln)
 	var cipher *ss.Cipher
-	log.Printf("server listening port %v ...\n", port)
+	ezlog.Infof("server listening port %v ...\n", port)
 
 	if printURI != false {
 		if domain == "" {
 			domain = ss.GetPublicIP()
 		}
 		str := ss.CreateURI(config.Method, password, domain, port)
-		log.Printf("%s\n", str)
+		ezlog.Infof("%s\n", str)
 	}
 
 	for {
 		conn, err := ln.Accept()
 		if err != nil {
-			if debug {
-				ss.Debug.Printf("accept error: %v\n", err)
-			}
+			ss.Debug.Errorf("accept error: %v\n", err)
 			return
 		}
 		// 首次连接 创建加密
 		if cipher == nil {
-			log.Println("creating cipher for port:", port)
+			ezlog.Info("creating cipher for port:", port)
 			cipher, err = ss.NewCipher(config.Method, password)
 			if err != nil {
-				log.Printf("Error generating cipher for port: %s %v\n", port, err)
+				ezlog.Infof("Error generating cipher for port: %s %v\n", port, err)
 				conn.Close()
 				continue
 			}
@@ -65,17 +63,15 @@ func handleConnection(conn *ss.Conn, port string) {
 	// TODO: 或许不需要记录
 	// 累计连接数达到一定数量记录一次，可能不太准
 	if connCnt-nextLogConnCnt >= 0 {
-		log.Printf("Number of client tcp connections reaches %d\n", nextLogConnCnt)
+		ezlog.Infof("Number of client tcp connections reaches %d\n", nextLogConnCnt)
 		nextLogConnCnt += logCntDelta
 	}
-	if debug {
-		ss.Debug.Printf("new client %s -> %s\n", sanitizeAddr(conn.RemoteAddr()), conn.LocalAddr())
-	}
+
+	ss.Debug.Debugf("new client %s -> %s\n", sanitizeAddr(conn.RemoteAddr()), conn.LocalAddr())
+
 	closed := false
 	defer func() {
-		if debug {
-			ss.Debug.Printf("closed pipe %s <-> %s\n", sanitizeAddr(conn.RemoteAddr()), host)
-		}
+		ss.Debug.Debugf("closed pipe %s <-> %s\n", sanitizeAddr(conn.RemoteAddr()), host)
 		if !closed {
 			conn.Close()
 		}
@@ -83,14 +79,12 @@ func handleConnection(conn *ss.Conn, port string) {
 
 	host, err := getRequest(conn)
 	if err != nil {
-		if debug {
-			ss.Debug.Println("error getting request", sanitizeAddr(conn.RemoteAddr()), conn.LocalAddr(), err)
-		}
+		ss.Debug.Error("error getting request", sanitizeAddr(conn.RemoteAddr()), conn.LocalAddr(), err)
 		return
 	}
 	// 保证地址中没有 nil 字符，这在win下会panic
 	if strings.ContainsRune(host, 0x00) {
-		ss.Debug.Println("invalid domain name.")
+		ss.Debug.Warn("invalid domain name.")
 		return
 	}
 	// 开始连接目标
@@ -98,9 +92,9 @@ func handleConnection(conn *ss.Conn, port string) {
 	if err != nil {
 		if ne, ok := err.(*net.OpError); ok && (ne.Err == syscall.EMFILE || ne.Err == syscall.ENFILE) {
 			// 文件描述符上限
-			ss.Debug.Println("dial error:", err)
+			ss.Debug.Error("dial error:", err)
 		} else {
-			ss.Debug.Println("error connecting to:", host, err)
+			ss.Debug.Error("error connecting to:", host, err)
 		}
 		return
 	}

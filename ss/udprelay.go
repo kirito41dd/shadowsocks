@@ -131,9 +131,9 @@ func Pipeloop(write net.PacketConn, writeAddr net.Addr, readClose net.PacketConn
 			if ne, ok := err.(*net.OpError); ok {
 				if ne.Err == syscall.EMFILE || ne.Err == syscall.ENFILE {
 					// log too many open file error
-					Debug.Println("[udp]read err:", err)
+					Debug.Error("[udp]read err:", err)
 				}
-				Debug.Printf("[udp]closed pipe %s<-%s\n", writeAddr, readClose.LocalAddr())
+				Debug.Debugf("[udp]closed pipe %s<-%s\n", writeAddr, readClose.LocalAddr())
 				return
 			}
 		}
@@ -165,19 +165,19 @@ func handleUDPConnection(handle *SecurePacketConn, n int, src net.Addr, receive 
 	case S5ipv4:
 		reqLen = S5lenIPv4
 		if len(receive) < reqLen {
-			Debug.Println("[udp]invalid received message.")
+			Debug.Debug("[udp]invalid received message.")
 		}
 		dstIP = net.IP(receive[S5IP0Idx : S5IP0Idx+net.IPv4len])
 	case S5ipv6:
 		reqLen = S5lenIPv6
 		if len(receive) < reqLen {
-			Debug.Println("[udp]invalid received message.")
+			Debug.Debug("[udp]invalid received message.")
 		}
 		dstIP = net.IP(receive[S5IP0Idx : S5IP0Idx+net.IPv6len])
 	case S5domain:
 		reqLen = int(receive[S5DmLenIdx]) + S5lenDmBase // 域名长度 加上其他头
 		if len(receive) < reqLen {
-			Debug.Println("[udp]invalid received message.")
+			Debug.Debug("[udp]invalid received message.")
 		}
 		name := string(receive[S5Dm0Idx : S5Dm0Idx+int(receive[S5DmLenIdx])]) // 取出域名
 		// 保证域名中没有 nil 字符，否则在win上会 panic
@@ -187,12 +187,12 @@ func handleUDPConnection(handle *SecurePacketConn, n int, src net.Addr, receive 
 		// dns 解析
 		dIP, err := net.ResolveIPAddr("ip", name)
 		if err != nil {
-			Debug.Printf("[udp]failed to resolve domain name: %s\n", name)
+			Debug.Debugf("[udp]failed to resolve domain name: %s\n", name)
 			return
 		}
 		dstIP = dIP.IP
 	default:
-		Debug.Printf("[udp]addrType %d not supported", addrType)
+		Debug.Debugf("[udp]addrType %d not supported", addrType)
 		return
 	}
 
@@ -214,13 +214,13 @@ func handleUDPConnection(handle *SecurePacketConn, n int, src net.Addr, receive 
 		return
 	}
 	if !exist {
-		Debug.Printf("[udp]new client %s->%s via %s\n", src, dst, remote.LocalAddr()) // 新的连接请求
+		Debug.Debugf("[udp]new client %s->%s via %s\n", src, dst, remote.LocalAddr()) // 新的连接请求
 		go func() {                                                                   // 启动转发 remote -> src
 			Pipeloop(handle, src, remote, addTraffic)
 			natlist.Delete(src.String())
 		}()
 	} else { // 老的连接 已经启动了
-		Debug.Printf("[udp]using cached client %s->%s via %s\n", src, dst, remote.LocalAddr())
+		Debug.Debugf("[udp]using cached client %s->%s via %s\n", src, dst, remote.LocalAddr())
 	}
 	if remote == nil {
 		fmt.Printf("WTF: no remote info in nat list")
@@ -234,9 +234,9 @@ func handleUDPConnection(handle *SecurePacketConn, n int, src net.Addr, receive 
 	}
 	if err != nil {
 		if ne, ok := err.(*net.OpError); ok && (ne.Err == syscall.EMFILE || ne.Err == syscall.ENFILE) {
-			Debug.Println("[udp]write error:", err)
+			Debug.Error("[udp]write error:", err)
 		} else {
-			Debug.Println("[udp]error connecting to:", dst, err)
+			Debug.Debug("[udp]error connecting to:", dst, err)
 		}
 		if conn := natlist.Delete(src.String()); conn != nil {
 			conn.Close()

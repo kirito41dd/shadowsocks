@@ -1,13 +1,12 @@
 package ss
 
 import (
-	"log"
+	"github.com/zshorz/ezlog"
 	"os"
 )
 
-var isDebug bool
 var null, _ = os.Open(os.DevNull)
-var Debug = log.New(null, "[DEBUG]", log.Ltime|log.Lshortfile)
+var Debug = ezlog.New(os.Stdout, "", ezlog.BitDefault, ezlog.LogAll)
 
 func init() {
 	SetDebug(true)

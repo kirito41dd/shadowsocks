@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/zshorz/ezlog"
 	"github.com/zshorz/shadowsocks/ss"
-	"log"
 	"net"
 	"sync"
 )
@@ -15,10 +15,10 @@ var passwdManger = PasswdManager{
 }
 
 func updatePasswd() {
-	log.Println("updating password")
+	ezlog.Info("updating password")
 	newconfig, err := ss.ParseConfig(configFile)
 	if err != nil {
-		log.Printf("error parsing config file %s to update password: %v\n", configFile, err)
+		ezlog.Errorf("error parsing config file %s to update password: %v\n", configFile, err)
 		return
 	}
 	oldconfig := config
@@ -34,10 +34,10 @@ func updatePasswd() {
 	}
 	// 仍保留在旧配置中的端口密码 应删除
 	for port := range oldconfig.PortPassword {
-		log.Printf("closing port %s as it's deleted\n", port)
+		ezlog.Info("closing port %s as it's deleted\n", port)
 		passwdManger.del(port)
 	}
-	log.Println("password updated")
+	ezlog.Info("password updated")
 }
 
 type PortListener struct {
@@ -128,12 +128,12 @@ func (pm *PasswdManager) del(port string) {
 func (pm *PasswdManager) updatePortPasswd(port, password string) {
 	pl, ok := pm.get(port)
 	if !ok {
-		log.Printf("new port %s added\n", port)
+		ezlog.Info("new port %s added\n", port)
 	} else {
 		if pl.password == password {
 			return
 		}
-		log.Printf("closing port %s to update password\n", port)
+		ezlog.Infof("closing port %s to update password\n", port)
 		pl.listener.Close()
 	}
 	// run 会将新的端口侦听器添加到passwdManager。
@@ -142,12 +142,12 @@ func (pm *PasswdManager) updatePortPasswd(port, password string) {
 	if udp {
 		pl, ok := pm.getUDP(port)
 		if !ok {
-			log.Printf("new udp port %s added\n", port)
+			ezlog.Infof("new udp port %s added\n", port)
 		} else {
 			if pl.password == password {
 				return
 			}
-			log.Printf("closing udp port %s to update password\n", port)
+			ezlog.Infof("closing udp port %s to update password\n", port)
 			pl.listener.Close()
 		}
 		go runUDP(port, password)

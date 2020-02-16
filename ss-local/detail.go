@@ -27,5 +27,5 @@ func enoughOptions(config *ss.Config) bool {
 }
 
 func Traffic(n int) {
-	ss.Debug.Printf("%d bytes data exchange\n", n)
+	ss.Debug.Debugf("%d bytes data exchange\n", n)
 }

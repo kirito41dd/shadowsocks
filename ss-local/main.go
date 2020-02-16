@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/zshorz/ezlog"
 	"github.com/zshorz/shadowsocks/ss"
-	"log"
 	"os"
 	"path"
 	"strconv"
@@ -15,8 +15,9 @@ var debug bool
 
 // ss-local 目前只支持 tcp 代理
 func main() {
-	log.SetOutput(os.Stdout)
-	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+	ezlog.SetOutput(os.Stdout)
+	ezlog.SetFlags(ezlog.BitDefault)
+
 	var configFile, cmdServer, cmdURI string
 	var cmdConfig ss.Config
 	var printVer, w bool
@@ -41,7 +42,7 @@ func main() {
 	}
 	ss.SetDebug(debug)
 	if s, e := parseURI(cmdURI, &cmdConfig); e != nil {
-		log.Printf("invalid URI: %s\n", e.Error())
+		ezlog.Errorf("invalid URI: %s\n", e.Error())
 		flag.Usage()
 		os.Exit(1)
 	} else if s != "" {
@@ -55,7 +56,7 @@ func main() {
 	if (!exists || err != nil) && binDir != "" && binDir != "." {
 		oldConfig := configFile
 		configFile = path.Join(binDir, "config.json")
-		log.Printf("%s not found, try config file %s\n", oldConfig, configFile)
+		ezlog.Errorf("%s not found, try config file %s\n", oldConfig, configFile)
 	}
 
 	config, err := ss.ParseConfig(configFile)

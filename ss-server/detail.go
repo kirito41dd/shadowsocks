@@ -2,8 +2,8 @@ package main
 
 import (
 	"errors"
+	"github.com/zshorz/ezlog"
 	"github.com/zshorz/shadowsocks/ss"
-	"log"
 	"net"
 	"os"
 	"os/signal"
@@ -18,7 +18,7 @@ func waitSignal() {
 		if sig == syscall.SIGHUP {
 			updatePasswd()
 		} else {
-			log.Printf("caught signal %v, exit", sig)
+			ezlog.Info("caught signal %v, exit", sig)
 			os.Exit(0)
 		}
 	}
@@ -36,14 +36,14 @@ func sanitizeAddr(addr net.Addr) string {
 func unifyPortPassword(config *ss.Config) (err error) {
 	if len(config.PortPassword) == 0 {
 		if !enoughOptions(config) {
-			log.Println("must specify both port and password")
+			ezlog.Info("must specify both port and password")
 			return errors.New("not enough options")
 		}
 		port := strconv.Itoa(config.ServerPort)
 		config.PortPassword = map[string]string{port: config.Password}
 	} else {
 		if config.Password != "" || config.ServerPort != 0 {
-			log.Println("given port_password, ignore server_port and password option")
+			ezlog.Info("given port_password, ignore server_port and password option")
 		}
 	}
 	return

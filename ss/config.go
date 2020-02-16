@@ -3,8 +3,8 @@ package ss
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/zshorz/ezlog"
 	"io/ioutil"
-	"log"
 	"os"
 	"reflect"
 	"time"
@@ -77,11 +77,10 @@ func ParseConfig(path string) (config *Config, err error) {
 
 // 是否启用 Debug , 传 bool
 func SetDebug(b bool) {
-	isDebug = b
 	if b {
-		Debug = log.New(os.Stdout, "[DEBUG]", log.Ltime|log.Lshortfile)
+		Debug.SetLogLevel(ezlog.LogAll)
 	} else {
-		Debug = log.New(null, "[DEBUG]", log.Ltime|log.Lshortfile)
+		Debug.SetLogLevel(ezlog.LogInfo)
 	}
 }
 

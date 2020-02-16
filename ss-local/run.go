@@ -2,9 +2,9 @@ package main
 
 import (
 	"encoding/binary"
+	"github.com/zshorz/ezlog"
 	"github.com/zshorz/shadowsocks/ss"
 	"io"
-	"log"
 	"math/rand"
 	"net"
 	"strconv"
@@ -13,13 +13,13 @@ import (
 func run(listenAddr string) {
 	ln, err := net.Listen("tcp", listenAddr)
 	if err != nil {
-		log.Fatal(err)
+		ezlog.Fatal(err)
 	}
-	log.Printf("starting local socks5 server at %v ...\n", listenAddr)
+	ezlog.Infof("starting local socks5 server at %v ...\n", listenAddr)
 	for {
 		conn, err := ln.Accept()
 		if err != nil {
-			log.Printf("accept:", err)
+			ezlog.Error("accept:", err)
 			continue
 		}
 		go handleConnection(conn)
@@ -27,7 +27,7 @@ func run(listenAddr string) {
 }
 
 func handleConnection(conn net.Conn) {
-	ss.Debug.Printf("socks connect from %s\n", conn.RemoteAddr().String())
+	ss.Debug.Debugf("socks connect from %s\n", conn.RemoteAddr().String())
 	closed := false
 	defer func() {
 		if !closed {
@@ -37,12 +37,12 @@ func handleConnection(conn net.Conn) {
 
 	var err error = nil
 	if err = handShake(conn); err != nil {
-		log.Println("socks handshake:", err)
+		ezlog.Error("socks handshake:", err)
 		return
 	}
 	rawaddr, addr, err := getRequest(conn)
 	if err != nil {
-		log.Println("error getting request:", err)
+		ezlog.Error("error getting request:", err)
 		return
 	}
 	// 发送回复 TODO: 这里目前写死了，应该返回的是欲连接主机的 地址和端口，但这些信息对客户端没啥用
@@ -50,14 +50,14 @@ func handleConnection(conn net.Conn) {
 	//   5   success  0      ipv4   0.0.0.0    1080   网络序
 	_, err = conn.Write([]byte{0x05, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x08, 0x43})
 	if err != nil {
-		ss.Debug.Println("send connection confirmation:", err)
+		ss.Debug.Error("send connection confirmation:", err)
 		return
 	}
 
 	remote, err := createServerConn(rawaddr, addr)
 	if err != nil {
 		if len(servers.srvCipher) > 1 {
-			log.Println("Failed connect to all available shadowsocks server")
+			ezlog.Error("Failed connect to all available shadowsocks server")
 		}
 		return
 	}
@@ -70,7 +70,7 @@ func handleConnection(conn net.Conn) {
 	go ss.PipeThenClose(conn, remote, Traffic)
 	ss.PipeThenClose(remote, conn, nil)
 	closed = true
-	ss.Debug.Println("closed connection to", addr)
+	ss.Debug.Debug("closed connection to", addr)
 }
 
 func handShake(conn net.Conn) (err error) {
@@ -157,7 +157,7 @@ func getRequest(conn net.Conn) (rawaddr []byte, host string, err error) {
 	port := binary.BigEndian.Uint16(buf[reqLen-2 : reqLen])
 	host = net.JoinHostPort(host, strconv.Itoa(int(port)))
 
-	ss.Debug.Printf("%s request to conn %s\n", conn.RemoteAddr().String(), host)
+	ss.Debug.Debugf("%s request to conn %s\n", conn.RemoteAddr().String(), host)
 
 	return
 }
@@ -190,14 +190,14 @@ func connectToServer(serverId int, rawaddr []byte, addr string) (remote *ss.Conn
 	se := servers.srvCipher[serverId]
 	remote, err = ss.DialWithRawAddr(rawaddr, se.server, se.cipher.Copy())
 	if err != nil {
-		ss.Debug.Printf("error connecting to shadowsocks server id %n : %s\n", serverId, err)
+		ss.Debug.Errorf("error connecting to shadowsocks server id %n : %s\n", serverId, err)
 		const maxFailCnt = 30
 		if servers.failCnt[serverId] < maxFailCnt {
 			servers.failCnt[serverId]++
 		}
 		return nil, err
 	}
-	ss.Debug.Printf("connected to %s via %s\n", addr, se.server)
+	ss.Debug.Debugf("connected to %s via %s\n", addr, se.server)
 	servers.failCnt[serverId] = 0
 	return
 }
