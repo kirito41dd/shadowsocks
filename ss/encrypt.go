@@ -115,6 +115,21 @@ func newChaCha20IETFStream(key, iv []byte, _ DecOrEnc) (cipher.Stream, error) {
 	return chacha20.NewCipher(iv, key)
 }
 
+// 无加密模式
+type NoneCipherStream struct {
+}
+func (none *NoneCipherStream) XORKeyStream(dst, src []byte) {
+	if len(dst) < len(src) {
+		panic("noneCipherStream: dst buffer is to small")
+	}
+	for i, v := range src {
+		dst[i] = v
+	}
+}
+func newNoneStream(key, iv []byte, _ DecOrEnc) (cipher.Stream, error) {
+	return &NoneCipherStream{}, nil
+}
+
 type salsaStreamCipher struct {
 	nonce 	[8]byte
 	key 	[32]byte
@@ -179,6 +194,7 @@ var cipherMethod = map[string]*cipherInfo{
 	"chacha20":      	{32, 8, newChaCha20Stream},
 	"chacha20-ietf": 	{32, 12, newChaCha20IETFStream},
 	"salsa20":       	{32, 8, newSalsa20Stream},
+	"none":				{0, 0, newNoneStream},
 }
 
 func CheckCipherMethod(method string) error {

@@ -112,4 +112,7 @@ func Test_ChaCha20IETF(t *testing.T) {
 	testBlockCipher(t, "chacha20-ietf")
 }
 
+func Test_NoneCipher(t *testing.T) {
+	testBlockCipher(t, "none")
+}
 // TODO: 性能测试
